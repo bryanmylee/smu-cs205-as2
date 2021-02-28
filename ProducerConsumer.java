@@ -3,19 +3,19 @@ import lib.Logger;
 public class ProducerConsumer {
     public static void main(String[] args) {
         Logger logger = new Logger("./log.txt");
-        Thread loggerThread = new Thread(logger);
-        loggerThread.start();
 
-        for (int i = 0; i < 100; i++) {
-            logger.addLog("hello world.");
-            System.out.println("added log.");
+        Thread[] threads = new Thread[1000];
+        for (int t = 0; t < threads.length; t++) {
+            int tid = t;
+            threads[t] = new Thread(() -> {
+                for (int i = 0; i < 10; i++) {
+                    logger.addLog(String.format("%d: added log %d.", tid, i));
+                }
+            });
+            threads[t].start();
         }
 
-        System.out.println("trying to kill.");
         logger.kill();
-        try {
-            loggerThread.join();
-        } catch (InterruptedException e) {}
     }
 }
 
