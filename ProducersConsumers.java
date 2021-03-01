@@ -1,5 +1,7 @@
-import lib.HotDogMachine;
+import lib.ConsumerThread;
 import lib.Logger;
+import lib.Machine;
+import lib.ProducerThread;
 
 public class ProducersConsumers {
 
@@ -14,8 +16,19 @@ public class ProducersConsumers {
         int numConsumers = Integer.valueOf(args[3]);
 
         Logger logger = new Logger("./log.txt");
+        Machine machine = new Machine(bufferSize);
 
-        HotDogMachine machine = new HotDogMachine(numToProduce, bufferSize, numProducers, numConsumers);
+        ProducerThread[] producers = new ProducerThread[numProducers];
+        for (int i = 0; i < numProducers; i++) {
+            producers[i] = new ProducerThread(i, machine);
+            producers[i].start();
+        }
+
+        ConsumerThread[] consumers = new ConsumerThread[numConsumers];
+        for (int i = 0; i < numConsumers; i++) {
+            consumers[i] = new ConsumerThread(i, machine);
+            consumers[i].start();
+        }
 
         logger.kill();
     }

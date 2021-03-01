@@ -2,19 +2,19 @@ package lib;
 
 public class ProducerThread extends Thread {
 
-    private HotDogMachine machine;
+    private volatile Machine machine;
 
     private int id;
 
-    public ProducerThread(HotDogMachine machine, int id) {
-        this.machine = machine;
+    public ProducerThread(int id, Machine machine) {
         this.id = id;
+        this.machine = machine;
     }
 
     @Override
     public void run() {
         while (true) {
-            machine.queueOrder(new Order(id));
+            machine.addOrder(new Order(id));
         }
     }
 

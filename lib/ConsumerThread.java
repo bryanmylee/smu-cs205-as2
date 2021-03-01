@@ -2,20 +2,19 @@ package lib;
 
 public class ConsumerThread extends Thread {
 
-    private HotDogMachine machine;
+    private volatile Machine machine;
 
     private int id;
 
-    public ConsumerThread(HotDogMachine machine, int id) {
-        this.machine = machine;
+    public ConsumerThread(int id, Machine machine) {
         this.id = id;
+        this.machine = machine;
     }
 
     @Override
     public void run() {
         while (true) {
-            Order consumed = machine.consumeOrder();
-            System.out.printf("consumer %d consumed %s\n", id, consumed);
+            machine.consumeOrder(id);
         }
     }
 
