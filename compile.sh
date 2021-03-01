@@ -1,3 +1,3 @@
 #!/bin/bash
-javac ProducerConsumer.java
+javac ProducersConsumers.java
 
