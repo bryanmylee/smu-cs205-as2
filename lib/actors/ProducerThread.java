@@ -1,12 +1,14 @@
-package lib;
+package lib.actors;
 
-public class ConsumerThread extends Thread {
+import lib.Machine;
+
+public class ProducerThread extends Thread {
 
     private volatile Machine machine;
 
     private int id;
 
-    public ConsumerThread(int id, Machine machine) {
+    public ProducerThread(int id, Machine machine) {
         this.id = id;
         this.machine = machine;
     }
@@ -14,7 +16,7 @@ public class ConsumerThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            machine.consumeOrder(id);
+            machine.addOrder(id);
         }
     }
 

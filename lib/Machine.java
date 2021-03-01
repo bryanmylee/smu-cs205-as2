@@ -14,15 +14,14 @@ public class Machine {
 
     private int orderId;
 
-    public synchronized void addOrder(Order order) {
+    public synchronized void addOrder(int producerId) {
         while (numItems >= buffer.length) {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
         lastProduced = (lastProduced + 1) % buffer.length;
-        order.setOrderId(orderId++);
-        buffer[lastProduced] = order;
+        buffer[lastProduced] = new Order(producerId, orderId++);
         System.out.printf("produced, buffer: [");
         for (int i = 0; i < buffer.length; i++) {
             System.out.printf("%s, ", buffer[i]);

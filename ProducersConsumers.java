@@ -1,7 +1,7 @@
-import lib.ConsumerThread;
 import lib.Logger;
 import lib.Machine;
-import lib.ProducerThread;
+import lib.actors.ConsumerThread;
+import lib.actors.ProducerThread;
 
 public class ProducersConsumers {
 
