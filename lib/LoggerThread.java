@@ -53,7 +53,7 @@ public class LoggerThread extends Thread {
      * @return The removed log entry, or null if the logger is terminating and
      * no log entries exist in the buffer.
      */
-    private synchronized String removeLog() {
+    private synchronized String waitAndRemoveLog() {
         while (buffer.size() == 0 && !terminating) { // catch spurious wakeups.
             try {
                 wait();
@@ -73,12 +73,12 @@ public class LoggerThread extends Thread {
     public void run() {
         // read-only, no need for synchronization.
         while (!terminating) {
-            String log = removeLog();
+            String log = waitAndRemoveLog();
             writeLog(log);
         }
         // cleanup before exiting.
         String log;
-        while ((log = removeLog()) != null) {
+        while ((log = waitAndRemoveLog()) != null) {
             writeLog(log);
         }
     }
