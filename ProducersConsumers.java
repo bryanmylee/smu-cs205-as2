@@ -1,5 +1,6 @@
 import lib.Logger;
 import lib.Machine;
+import lib.Work;
 import lib.actors.ConsumerThread;
 import lib.actors.ProducerThread;
 
@@ -15,6 +16,7 @@ public class ProducersConsumers {
         int numProducers = Integer.valueOf(args[2]);
         int numConsumers = Integer.valueOf(args[3]);
 
+        Work.calibrateWorkPerSecond();
         Logger logger = new Logger("./log.txt");
         Machine machine = new Machine(bufferSize, numToProduce);
 

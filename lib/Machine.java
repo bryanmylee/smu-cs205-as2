@@ -32,7 +32,7 @@ public class Machine {
             throw new NoRemainingOrdersException();
         }
         lastProduced = (lastProduced + 1) % buffer.length;
-        Work.goWork(1000);
+        Work.goWork(1);
         buffer[lastProduced] = order;
         System.out.printf("produced, buffer: [");
         for (int i = 0; i < buffer.length; i++) {
@@ -55,7 +55,7 @@ public class Machine {
             throw new NoRemainingOrdersException();
         }
         lastConsumed = (lastConsumed + 1) % buffer.length;
-        Work.goWork(1000);
+        Work.goWork(1);
         Order consumed = buffer[lastConsumed];
         System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
         numItemsInBuffer--;

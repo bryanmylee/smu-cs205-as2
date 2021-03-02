@@ -20,7 +20,7 @@ public class ConsumerThread extends Thread {
         try {
             while (true) {
                 machine.consumeOrder(id);
-                Work.goWork(2000);
+                Work.goWork(2);
             }
         } catch (NoRemainingOrdersException e) {
             System.out.println("completed consumption");

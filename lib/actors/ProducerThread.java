@@ -21,7 +21,7 @@ public class ProducerThread extends Thread {
         try {
             while (true) {
                 int orderId = machine.allocateOrderId();
-                Work.goWork(6000);
+                Work.goWork(6);
                 machine.addOrder(new Order(id, orderId));
             }
         } catch (NoRemainingOrdersException e) {
