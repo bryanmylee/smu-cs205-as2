@@ -6,7 +6,7 @@ import lib.Work;
 
 public class ConsumerThread extends Thread {
 
-    private volatile Machine machine;
+    private Machine machine;
 
     private int id;
 
@@ -20,7 +20,7 @@ public class ConsumerThread extends Thread {
         try {
             while (true) {
                 machine.consumeOrder(id);
-                Work.goWork(2);
+                Work.goWork(2); // work required to consume an order.
             }
         } catch (NoRemainingOrdersException e) {}
     }

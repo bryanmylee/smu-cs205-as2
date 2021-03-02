@@ -88,7 +88,8 @@ public class LoggerThread extends Thread {
             return;
         }
         try {
-            Files.write(logFile, (log + "\n").getBytes(), StandardOpenOption.APPEND);
+            Files.write(logFile, (log + "\n").getBytes(),
+                    StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.err.println("Failed to write to log file");
             e.printStackTrace();

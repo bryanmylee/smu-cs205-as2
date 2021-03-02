@@ -7,7 +7,7 @@ import lib.Work;
 
 public class ProducerThread extends Thread {
 
-    private volatile Machine machine;
+    private Machine machine;
 
     private int id;
 
@@ -21,7 +21,7 @@ public class ProducerThread extends Thread {
         try {
             while (true) {
                 int orderId = machine.allocateOrderId();
-                Work.goWork(6);
+                Work.goWork(6); // work required to make an order.
                 machine.addOrder(new Order(id, orderId));
             }
         } catch (NoRemainingOrdersException e) {}
