@@ -3,22 +3,27 @@ package lib;
 public class Machine {
 
     private Order[] buffer;
+    private int numToProduce;
+
+    public Machine(int bufferSize, int numToProduce) {
+        buffer = new Order[bufferSize];
+        this.numToProduce = numToProduce;
+    }
 
     private int lastProduced;
     private int lastConsumed;
-    private int numItems;
-
-    public Machine(int size) {
-        buffer = new Order[size];
-    }
-
+    private int numItemsInBuffer;
     private int orderId;
 
     public synchronized void addOrder(int producerId) {
-        while (numItems >= buffer.length) {
+        while (numItemsInBuffer >= buffer.length && numToProduce > 0) {
             try {
                 wait();
             } catch (InterruptedException e) {}
+        }
+        if (numToProduce <= 0) {
+            notifyAll();
+            throw new NoRemainingOrdersException();
         }
         lastProduced = (lastProduced + 1) % buffer.length;
         buffer[lastProduced] = new Order(producerId, orderId++);
@@ -27,20 +32,25 @@ public class Machine {
             System.out.printf("%s, ", buffer[i]);
         }
         System.out.printf("]\n");
-        numItems++;
+        numItemsInBuffer++;
+        numToProduce--;
         notifyAll();
     }
 
     public synchronized Order consumeOrder(int consumerId) {
-        while (numItems <= 0) {
+        while (numItemsInBuffer <= 0 && numToProduce > 0) {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
+        if (numToProduce <= 0 && numItemsInBuffer <= 0) {
+            notifyAll();
+            throw new NoRemainingOrdersException();
+        }
         lastConsumed = (lastConsumed + 1) % buffer.length;
         Order consumed = buffer[lastConsumed];
         System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
-        numItems--;
+        numItemsInBuffer--;
         notifyAll();
         return consumed;
     }

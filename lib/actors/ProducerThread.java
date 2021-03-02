@@ -1,6 +1,7 @@
 package lib.actors;
 
 import lib.Machine;
+import lib.NoRemainingOrdersException;
 
 public class ProducerThread extends Thread {
 
@@ -15,8 +16,12 @@ public class ProducerThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            machine.addOrder(id);
+        try {
+            while (true) {
+                machine.addOrder(id);
+            }
+        } catch (NoRemainingOrdersException e) {
+            System.out.println("completed production");
         }
     }
 

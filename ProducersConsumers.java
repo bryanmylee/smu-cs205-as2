@@ -16,7 +16,7 @@ public class ProducersConsumers {
         int numConsumers = Integer.valueOf(args[3]);
 
         Logger logger = new Logger("./log.txt");
-        Machine machine = new Machine(bufferSize);
+        Machine machine = new Machine(bufferSize, numToProduce);
 
         ProducerThread[] producers = new ProducerThread[numProducers];
         for (int i = 0; i < numProducers; i++) {
@@ -28,6 +28,17 @@ public class ProducersConsumers {
         for (int i = 0; i < numConsumers; i++) {
             consumers[i] = new ConsumerThread(i, machine);
             consumers[i].start();
+        }
+
+        for (int i = 0; i < numProducers; i++) {
+            try {
+                producers[i].join();
+            } catch (InterruptedException e) {}
+        }
+        for (int i = 0; i < numConsumers; i++) {
+            try {
+                consumers[i].join();
+            } catch (InterruptedException e) {}
         }
 
         logger.kill();

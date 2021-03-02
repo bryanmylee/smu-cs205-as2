@@ -1,6 +1,7 @@
 package lib.actors;
 
 import lib.Machine;
+import lib.NoRemainingOrdersException;
 
 public class ConsumerThread extends Thread {
 
@@ -15,8 +16,12 @@ public class ConsumerThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            machine.consumeOrder(id);
+        try {
+            while (true) {
+                machine.consumeOrder(id);
+            }
+        } catch (NoRemainingOrdersException e) {
+            System.out.println("completed consumption");
         }
     }
 
