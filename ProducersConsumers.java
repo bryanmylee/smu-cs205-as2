@@ -49,6 +49,8 @@ public class ProducersConsumers {
             } catch (InterruptedException e) {}
         }
 
+        machine.logSummary();
+
         logger.kill();
     }
 }

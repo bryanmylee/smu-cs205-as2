@@ -1,5 +1,8 @@
 package lib;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Machine {
 
     private Order[] buffer;
@@ -23,6 +26,25 @@ public class Machine {
         }
     }
 
+    Map<Integer, Integer> producerWorksheet = new HashMap<>();
+    Map<Integer, Integer> consumerWorksheet = new HashMap<>();
+
+    private void incrementWorksheet(Map<Integer, Integer> worksheet, int id) {
+        worksheet.put(id, worksheet.getOrDefault(id, 0) + 1);
+    }
+
+    public void logSummary() {
+        logger.addLog("summary:");
+        for (Map.Entry<Integer, Integer> entry : producerWorksheet.entrySet()) {
+            logger.addLog(String.format("p%d makes %d",
+                        entry.getKey(), entry.getValue()));
+        }
+        for (Map.Entry<Integer, Integer> entry : consumerWorksheet.entrySet()) {
+            logger.addLog(String.format("c%d packs %d",
+                        entry.getKey(), entry.getValue()));
+        }
+    }
+
     public synchronized void addOrder(Order order) {
         while (numItemsInBuffer >= buffer.length && numToProduce > 0) {
             try {
@@ -36,13 +58,9 @@ public class Machine {
         lastProduced = (lastProduced + 1) % buffer.length;
         Work.goWork(1);
         buffer[lastProduced] = order;
+        incrementWorksheet(producerWorksheet, order.getProducerId());
         logger.addLog(String.format("p%d puts %d",
                     order.getProducerId(), order.getOrderId()));
-        // System.out.printf("produced, buffer: [");
-        // for (int i = 0; i < buffer.length; i++) {
-        //     System.out.printf("%s, ", buffer[i]);
-        // }
-        // System.out.printf("]\n");
         numItemsInBuffer++;
         numToProduce--;
         notifyAll();
@@ -61,9 +79,9 @@ public class Machine {
         lastConsumed = (lastConsumed + 1) % buffer.length;
         Work.goWork(1);
         Order consumed = buffer[lastConsumed];
+        incrementWorksheet(consumerWorksheet, consumerId);
         logger.addLog(String.format("c%d gets %d from p%d",
                     consumerId, consumed.getOrderId(), consumed.getProducerId()));
-        // System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
         numItemsInBuffer--;
         notifyAll();
         return consumed;
