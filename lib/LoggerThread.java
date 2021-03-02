@@ -66,6 +66,7 @@ public class LoggerThread extends Thread {
 
     public synchronized void kill() {
         terminating = true;
+        notifyAll();
     }
 
     @Override
@@ -83,6 +84,9 @@ public class LoggerThread extends Thread {
     }
 
     private void writeLog(String log) {
+        if (log == null) {
+            return;
+        }
         try {
             Files.write(logFile, (log + "\n").getBytes(), StandardOpenOption.APPEND);
             System.out.println("logged to disk.");
