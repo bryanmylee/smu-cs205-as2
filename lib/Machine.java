@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Machine {
 
-    private Order[] buffer;
     private int numToProduce;
+    private Order[] buffer;
     private Logger logger;
 
     public Machine(int numToProduce, int bufferSize, Logger logger) {
@@ -15,9 +15,6 @@ public class Machine {
         this.logger = logger;
     }
 
-    private int lastProduced;
-    private int lastConsumed;
-    private int numItemsInBuffer;
     private Integer orderId = 0;
 
     public int allocateOrderId() {
@@ -44,6 +41,10 @@ public class Machine {
                         entry.getKey(), entry.getValue()));
         }
     }
+
+    private int lastProduced;
+    private int lastConsumed;
+    private int numItemsInBuffer;
 
     public synchronized void addOrder(Order order) {
         while (numItemsInBuffer >= buffer.length && numToProduce > 0) {
