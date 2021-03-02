@@ -1,4 +1,4 @@
-package lib;
+package lib.logger;
 
 public class Logger {
 

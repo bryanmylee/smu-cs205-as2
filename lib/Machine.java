@@ -2,6 +2,7 @@ package lib;
 
 import java.util.HashMap;
 import java.util.Map;
+import lib.logger.Logger;
 
 public class Machine {
 

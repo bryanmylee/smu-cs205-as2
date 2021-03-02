@@ -1,8 +1,8 @@
-import lib.Logger;
 import lib.Machine;
 import lib.Work;
 import lib.actors.ConsumerThread;
 import lib.actors.ProducerThread;
+import lib.logger.Logger;
 
 public class ProducersConsumers {
 

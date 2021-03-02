@@ -1,4 +1,4 @@
-package lib;
+package lib.logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
