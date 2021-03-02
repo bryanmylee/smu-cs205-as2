@@ -89,7 +89,6 @@ public class LoggerThread extends Thread {
         }
         try {
             Files.write(logFile, (log + "\n").getBytes(), StandardOpenOption.APPEND);
-            System.out.println("logged to disk.");
         } catch (IOException e) {
             System.out.println("Failed to write to log file");
             e.printStackTrace();

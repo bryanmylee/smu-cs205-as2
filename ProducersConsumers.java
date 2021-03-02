@@ -18,7 +18,13 @@ public class ProducersConsumers {
 
         Work.calibrateWorkPerSecond();
         Logger logger = new Logger("./log.txt");
-        Machine machine = new Machine(bufferSize, numToProduce);
+
+        logger.addLog(String.format("order:%d", numToProduce));
+        logger.addLog(String.format("capacity:%d", bufferSize));
+        logger.addLog(String.format("makers:%d", numProducers));
+        logger.addLog(String.format("packers:%d", numConsumers));
+
+        Machine machine = new Machine(numToProduce, bufferSize, logger);
 
         ProducerThread[] producers = new ProducerThread[numProducers];
         for (int i = 0; i < numProducers; i++) {

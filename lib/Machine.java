@@ -4,10 +4,12 @@ public class Machine {
 
     private Order[] buffer;
     private int numToProduce;
+    private Logger logger;
 
-    public Machine(int bufferSize, int numToProduce) {
-        buffer = new Order[bufferSize];
+    public Machine(int numToProduce, int bufferSize, Logger logger) {
         this.numToProduce = numToProduce;
+        buffer = new Order[bufferSize];
+        this.logger = logger;
     }
 
     private int lastProduced;
@@ -34,11 +36,13 @@ public class Machine {
         lastProduced = (lastProduced + 1) % buffer.length;
         Work.goWork(1);
         buffer[lastProduced] = order;
-        System.out.printf("produced, buffer: [");
-        for (int i = 0; i < buffer.length; i++) {
-            System.out.printf("%s, ", buffer[i]);
-        }
-        System.out.printf("]\n");
+        logger.addLog(String.format("p%d puts %d",
+                    order.getProducerId(), order.getOrderId()));
+        // System.out.printf("produced, buffer: [");
+        // for (int i = 0; i < buffer.length; i++) {
+        //     System.out.printf("%s, ", buffer[i]);
+        // }
+        // System.out.printf("]\n");
         numItemsInBuffer++;
         numToProduce--;
         notifyAll();
@@ -57,7 +61,9 @@ public class Machine {
         lastConsumed = (lastConsumed + 1) % buffer.length;
         Work.goWork(1);
         Order consumed = buffer[lastConsumed];
-        System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
+        logger.addLog(String.format("c%d gets %d from p%d",
+                    consumerId, consumed.getOrderId(), consumed.getProducerId()));
+        // System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
         numItemsInBuffer--;
         notifyAll();
         return consumed;
