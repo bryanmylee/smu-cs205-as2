@@ -13,7 +13,6 @@ public class Work {
         // W/s
         // 1 / ms/MW = MW/ms * 1000 = MW/s * 1_000_000 = W/s
         workPerSecond = 1_000_000_000 / millisPerMillionWork;
-        System.out.printf("work required: %d\n", workPerSecond);
     }
 
     public static void goWork(int seconds) {

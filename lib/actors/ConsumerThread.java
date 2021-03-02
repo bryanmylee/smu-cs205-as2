@@ -22,9 +22,7 @@ public class ConsumerThread extends Thread {
                 machine.consumeOrder(id);
                 Work.goWork(2);
             }
-        } catch (NoRemainingOrdersException e) {
-            System.out.println("completed consumption");
-        }
+        } catch (NoRemainingOrdersException e) {}
     }
 
 }

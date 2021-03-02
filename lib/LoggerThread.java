@@ -20,7 +20,7 @@ public class LoggerThread extends Thread {
         try {
             logFile.toFile().createNewFile();
         } catch (IOException e) {
-            System.out.println("Failed to initialize log file");
+            System.err.println("Failed to initialize log file");
             e.printStackTrace();
         }
     }
@@ -90,7 +90,7 @@ public class LoggerThread extends Thread {
         try {
             Files.write(logFile, (log + "\n").getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
-            System.out.println("Failed to write to log file");
+            System.err.println("Failed to write to log file");
             e.printStackTrace();
         }
     }

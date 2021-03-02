@@ -24,9 +24,7 @@ public class ProducerThread extends Thread {
                 Work.goWork(6);
                 machine.addOrder(new Order(id, orderId));
             }
-        } catch (NoRemainingOrdersException e) {
-            System.out.println("completed production");
-        }
+        } catch (NoRemainingOrdersException e) {}
     }
 
 }
