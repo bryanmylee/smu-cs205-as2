@@ -13,9 +13,15 @@ public class Machine {
     private int lastProduced;
     private int lastConsumed;
     private int numItemsInBuffer;
-    private int orderId;
+    private Integer orderId = 0;
 
-    public synchronized void addOrder(int producerId) {
+    public int allocateOrderId() {
+        synchronized(orderId) {
+            return orderId++;
+        }
+    }
+
+    public synchronized void addOrder(Order order) {
         while (numItemsInBuffer >= buffer.length && numToProduce > 0) {
             try {
                 wait();
@@ -26,7 +32,8 @@ public class Machine {
             throw new NoRemainingOrdersException();
         }
         lastProduced = (lastProduced + 1) % buffer.length;
-        buffer[lastProduced] = new Order(producerId, orderId++);
+        Work.goWork(1000);
+        buffer[lastProduced] = order;
         System.out.printf("produced, buffer: [");
         for (int i = 0; i < buffer.length; i++) {
             System.out.printf("%s, ", buffer[i]);
@@ -48,6 +55,7 @@ public class Machine {
             throw new NoRemainingOrdersException();
         }
         lastConsumed = (lastConsumed + 1) % buffer.length;
+        Work.goWork(1000);
         Order consumed = buffer[lastConsumed];
         System.out.printf("consumer %d consumed %s\n", consumerId, consumed);
         numItemsInBuffer--;

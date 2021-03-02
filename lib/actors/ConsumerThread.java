@@ -2,6 +2,7 @@ package lib.actors;
 
 import lib.Machine;
 import lib.NoRemainingOrdersException;
+import lib.Work;
 
 public class ConsumerThread extends Thread {
 
@@ -19,6 +20,7 @@ public class ConsumerThread extends Thread {
         try {
             while (true) {
                 machine.consumeOrder(id);
+                Work.goWork(2000);
             }
         } catch (NoRemainingOrdersException e) {
             System.out.println("completed consumption");
